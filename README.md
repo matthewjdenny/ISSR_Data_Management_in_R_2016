@@ -10,9 +10,9 @@ This Git repo contains all materials necessary for this ISSR Data Management in 
 
 You will then want to `clone` this repo onto your computer using either the 
 
-    https://github.com/matthewjdenny/ISSR_Data_Science_Summer_Summit_15.git
+    https://github.com/matthewjdenny/ISSR_Data_Management_in_R_2016.git
 
-link and your client or by clicking the "Clone in Desktop" button on the right hand side of the page. If you want to directly edit the files posted here and track your changes, you can copy individual files into another directory and create your own repo with the files in it.  We will go over using Github in detail on the first morning of the workshop, so there is no need to spend too much time trying to figure Github out.
+link and your client or by clicking the "Clone in Desktop" button on the right hand side of the page. If you want to directly edit the files posted here and track your changes, you can copy individual files into another directory and create your own repo with the files in it.  We will go over using Github on the first morning of the workshop, so there is no need to spend too much time trying to figure Github out.
 
 ## Schedule
 
@@ -27,15 +27,14 @@ Please download R and RStudio before the workshop, and if you have never used R 
 * This section of Quick R provides a basic overview of the R interface. You can navigate between pages by clicking on the links on the top left -- <http://www.statmethods.net/interface/index.html>
 * A nice place to start learning R interactively is [Swirl](http://swirlstats.com/).
 
-
-
 ### Monday
 
-1. **9:00-10:00** We will go over high level materials including downloading and installing R, setting up RStudio and Github, and good project management habits.
+1. **9:00-10:00** We will go over high level materials including downloading and installing R, setting up RStudio and Github, and good project management habits. Follow-up materials: [**[R Power User Tutorial]**](http://www.mjdenny.com/Data_Science_Tools.html) 
 2. **10:00-10:10** Break
-3. **10:10-12:00** Introduction to R programming.
+3. **10:10-12:00** Introduction to R programming. [**[Script Here]**](https://github.com/matthewjdenny/ISSR_Data_Management_in_R_2016/blob/master/Scripts/Intro.R)
 4. **12:00-1:00** Lunch
-5. **1:00-3:00** More R programming -- functions, conditionals and lots of looping. [**[Script Here]**](https://github.com/matthewjdenny/ISSR_Data_Science_Summer_Summit_15/blob/master/Scripts/Intermediate.R), [**[Materials Here]**](https://github.com/matthewjdenny/ISSR_Data_Science_Summer_Summit_15/blob/master/Handouts/Intermediate_R.pdf)
+5. **1:00-3:00** More R programming -- functions, conditionals and lots of looping. [**[Script Here]**](https://github.com/matthewjdenny/ISSR_Data_Management_in_R_2016/blob/master/Scripts/Intermediate.R), [**[Additional Materials Here]**](https://github.com/matthewjdenny/ISSR_Data_Management_in_R_2016/blob/master/Handouts/Intermediate_R.pdf)
+6. Overview of materials for today: [**[R Tutorial]**](http://www.mjdenny.com/R_Tutorial.html) 
 
 ### Tuesday
 
@@ -43,7 +42,7 @@ Please download R and RStudio before the workshop, and if you have never used R 
 2. **11:00-11:10** Break.
 3. **11:10-12:00** Mini unit: producing publication quality plots and graphics.
 4. **12:00-1:00** Lunch
-5. **1:00-2:00** Mini unit: social network data management
+5. **1:00-2:00** Mini unit: social network data management [**[Online Tutorial]**](http://www.mjdenny.com/Preparing_Network_Data_In_R.html) 
 5. **2:00-3:00** Learning by example, and questions.
 
 ## Resources
