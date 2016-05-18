@@ -38,12 +38,12 @@ Please download R and RStudio before the workshop, and if you have never used R 
 
 ### Tuesday
 
-1. **9:00-11:00** Managing multiple datasets
+1. **9:00-11:00** Managing multiple datasets. [**[Script]**](http://www.mjdenny.com/workshops/Managing_Multiple_Datasets.R) 
 2. **11:00-11:10** Break.
 3. **11:10-12:00** Mini unit: producing publication quality plots and graphics.
 4. **12:00-1:00** Lunch
-5. **1:00-2:00** Mini unit: social network data management [**[Online Tutorial]**](http://www.mjdenny.com/Preparing_Network_Data_In_R.html) 
-5. **2:00-3:00** Learning by example, and questions.
+5. **1:00-2:00** Mini unit: social network data management [**[Script]**](http://www.mjdenny.com/workshops/Preparing_Network_Data_in_R.R), [**[Online Tutorial]**](http://www.mjdenny.com/Preparing_Network_Data_In_R.html) 
+5. **2:00-3:00** Learning by example, Q & A.
 
 ## Resources
 
