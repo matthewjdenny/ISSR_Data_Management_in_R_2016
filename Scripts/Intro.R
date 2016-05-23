@@ -7,7 +7,7 @@
 rm(list = ls())
 
 # Set your working directory -- This is where R goes to look for files and save stuff by default. You will need to do this for each computer you run your script file on. In RStudio, you can go to Session -> Set Working Directory -> Choose Directory and select a folder from a drop down menu. For me, this looks like:
-setwd("/Users/matthewjdenny/Desktop/ISSR_Testing")
+setwd("~/Desktop")
 
 
 
@@ -151,7 +151,7 @@ save(list= ls(), file = "MyData.Rdata")
 rm(list= ls())
 
 #now we can load the data back in! It is good practice to set our working directory again first (remeber to change this to the folder location where you downloaded the workshop materials or saved this script file!):
-setwd("~/Dropbox/RA_and_Consulting_Work/ISSR_Consulting_Work/Intro_To_R")
+setwd("~/Desktop")
 
 #load in the two objects
 load(file = "Two_objects.Rdata")
