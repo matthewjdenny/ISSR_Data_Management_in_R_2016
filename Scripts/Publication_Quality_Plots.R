@@ -1,4 +1,4 @@
-# publication quality graphics
+# publication quality graphics (5/24/16)
 # Matthew J. Denny
 # email mdenny@psu.edu with questions or comments
 
@@ -126,33 +126,69 @@ grid.arrange( g1, g2, g3, ncol = 3)
 dev.off()
 
 
-# now lets try a more complicated example
-colnames(data2) <- c("Congress", "NOMINATE","Seniority", "Connectedness",
-                     "Committee_Chair","NOMINATE_SQ", "In_Majority" )
-save(data2,file = "Influence_Data_2.Rdata" )
+# now lets try a more complicated example where we run a regression for each
+# session of congress then plot the resulting parameter estimates together.
 
-i = 97
+# we are going to work through sessions of congress starting with the 97th. We
+# do this first iteration outside of the loop and then complete using a loop.
+i <- 97
+
+# subset the data
 cur_data <- data2[which(data2$Congress == i),]
+
+# fit a linear model
 fit <- lm(formula = "Connectedness ~ Seniority + NOMINATE + NOMINATE_SQ +  In_Majority + Committee_Chair", data = cur_data )
 
+# we can look at the output
+summary(fit)
+
+# create a session variable which we will add on to our coefficients
 Session <- rep(i,6)
-Session_Regression_Coefficients <- cbind(summary(fit)$coefficients[2:6,],Session)
 
+# column bind them together
+Session_Regression_Coefficients <- cbind(summary(fit)$coefficients[2:6,],
+                                         Session)
+
+# take a look!
+print(Session_Regression_Coefficients)
+
+# now we loop over the remaining sessions of Congress.
 for (i in 98:108) {
-    print(i)
-    cur_data <- data2[which(data2$Congress == i),]
-    fit <- lm(formula = "Connectedness ~ Seniority + NOMINATE + NOMINATE_SQ +  In_Majority + Committee_Chair", data = cur_data )
-    Session <- rep(i,6)
-    summ <- cbind(summary(fit)$coefficients[2:6,],Session)
-    Session_Regression_Coefficients  <- rbind(Session_Regression_Coefficients ,summ)
-}
-Variable <- rownames(Session_Regression_Coefficients)
-Session_Regression_Coefficients <- data.frame(Session_Regression_Coefficients,Variable, stringsAsFactors = F)
+    # let the user know what iteration we are on
+    cat("Currently working on session:",i,"\n")
 
+    # subset the data to the current session
+    cur_data <- data2[which(data2$Congress == i),]
+
+    # fit a linear model
+    fit <- lm(formula = "Connectedness ~ Seniority + NOMINATE + NOMINATE_SQ +  In_Majority + Committee_Chair", data = cur_data )
+
+    # add in session variable
+    Session <- rep(i,6)
+
+    # create the data frame we will add on to the existing
+    # Session_Regression_Coefficients data.frame
+    addition <- cbind(summary(fit)$coefficients[2:6,],Session)
+
+    # add on our addition using rbind
+    Session_Regression_Coefficients  <- rbind(Session_Regression_Coefficients ,
+                                              addition)
+}
+
+# get the row names of Session_Regression_Coefficients and use these as lables
+Variable <- rownames(Session_Regression_Coefficients)
+
+# create a data frame using stringsAs stringsAsFactors = F
+Session_Regression_Coefficients <- data.frame(Session_Regression_Coefficients,
+                                              Variable,
+                                              stringsAsFactors = F)
+
+# create confidence interval z values
 interval1 <- -qnorm((1-0.9)/2)  # 90% multiplier
 interval2 <- -qnorm((1-0.95)/2)  # 95% multiplier
 
 pdf(file = paste("Connectedness_Regression_Coefficients.pdf",sep = ""),width = 18,height =4)
+# plot coefficients faceted by Variable type
 ggplot(Session_Regression_Coefficients, aes(x = Session, y = Estimate))  +
     facet_grid(. ~ Variable, scales = "free") +
     geom_point(shape = 19,color = UMASS_BLUE) +
