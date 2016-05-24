@@ -1,4 +1,4 @@
-###### ISSR Intro To R Workshop, 2/20/15, contact mdenny@polsci.umass.edu #####
+###### Intermediate R Workshop, 5/23/16, contact mdenny@psu.edu #####
 
 
 ###### Preliminaries -- Setting Up R To Do Work ######
@@ -7,7 +7,7 @@
 rm(list = ls())
 
 # Set your working directory -- This is where R goes to look for files and save stuff by default. You will need to do this for each computer you run your script file on. In RStudio, you can go to Session -> Set Working Directory -> Choose Directory and select a folder from a drop down menu. For me, this looks like:
-setwd("~/Dropbox/RA_and_Consulting_Work/ISSR_Data_Science_Summer_Summit_15")
+setwd("~/Dropbox/RA_and_Consulting_Work/ISSR_Data_Management_in_R_2016")
 
 
 ###### cat vs. print ######
@@ -42,6 +42,7 @@ fingers <- 8
 #now lets print out how many fingers we have:
 print(paste("Hello,", "I have", fingers, "Fingers", sep = " "))
 #now lets separate with dashes just for fun:
+
 print(paste("Hello,", "I have", fingers, "Fingers", sep = "-----"))
 
 #now lets try the same thing with cat
@@ -64,6 +65,9 @@ my_vector <- c(20:30)
 # take a look
 cat(my_vector)
 
+# notice how the value of i changes
+i = 76
+# loop over values in the vector
 for(i in 1:length(my_vector)){
     cat(i,"\n")
     my_vector[i] <- sqrt(my_vector[i])
@@ -106,7 +110,6 @@ for(i in 1:length(my_vector)){
     }
 }
 
-
 # you can also add in an else statement to do something else if the condition is not met.
 my_vector <- c(20:30)
 for(i in 1:length(my_vector)){
@@ -124,7 +127,8 @@ for(i in 1:length(my_vector)){
 #user defined functions allow you to easily reuse a section of code
 
 #define a function that will take the sum of a particular column of a matrix (where the column index is a number)
-my_column_sum <- function(col_number,my_matrix){ 
+my_column_sum <- function(col_number,
+                          my_matrix){
     #take the column sum of the matrix
     col_sum <- sum(my_matrix[,col_number])
     return(col_sum)
@@ -135,7 +139,8 @@ my_mat <- matrix(1:100,nrow=10,ncol=10)
 #look at our matrix
 my_mat
 #take its column sum
-temp <- my_column_sum(col_number = 1, my_matrix = my_mat)
+temp <- my_column_sum(col_number = 1,
+                      my_matrix = my_mat)
 
 #lets double check
 sum(my_mat[,1])
@@ -145,37 +150,50 @@ for(i in 1:10){
   cat(my_column_sum(i,my_mat),"\n")
 }
 
+col_sums_for_fun <- function(mat) {
+    # figure out the number of columns
+    cols <- ncol(mat)
+    # loop over columns
+    for(i in 1:cols){
+        # calculate the column sum
+        cat(my_column_sum(i,mat),"\n")
+    }
+}
+
+my_mat2 <- matrix(301:700,nrow=20,ncol=20)
+
+col_sums_for_fun(my_mat2)
 ###### A Data Cleaning Example ######
 
 # lets read in some data
 load("./Data/Example_Data.Rdata")
 
-# This is a dataset with metadata on all bills introduced in the United States Congress between 2011-2012. Among many variables, it contains indicators of the number of cosponsors, the month the bill was introduced, the chamber it was introduced in (House or Senate), the major topic code (see reference list below) and the party of the sponsor. 
+# This is a dataset with metadata on all bills introduced in the United States Congress between 2011-2012. Among many variables, it contains indicators of the number of cosponsors, the month the bill was introduced, the chamber it was introduced in (House or Senate), the major topic code (see reference list below) and the party of the sponsor.
 
-# Lets say we wanted to look at a subset of all bills that were introduced in the House that were about any of the first ten topics and then take a the sum of the number of bills introduced in each month by each party that passed the house and divide by the total number of cosponsorships they recieved to get a weight for the effectiveness of each cosponsorship. Here are the topics: 
+# Lets say we wanted to look at a subset of all bills that were introduced in the House that were about any of the first ten topics and then take a the sum of the number of bills introduced in each month by each party that passed the house and divide by the total number of cosponsorships they recieved to get a weight for the effectiveness of each cosponsorship. Here are the topics:
 
-# Major topic numbers --- 
-# 1. Macroeconomics  
-# 2. Civil Rights, Minority Issues, and Civil Liberties  
-# 3. Health  
-# 4. Agriculture  
-# 5. Labor and Employment  
-# 6. Education  
-# 7. Environment  
-# 8. Energy  
-# 9. Immigration  
-# 10. Transportation 
-# 12. Law, Crime, and Family Issues 
-# 13. Social Welfare 
-# 14. Community Development and Housing Issues 
-# 15. Banking, Finance, and Domestic Commerce 
-# 16. Defense 
-# 17. Space, Science, Technology and Communications 
-# 18. Foreign Trade 
-# 19. International Affairs and Foreign Aid 
+# Major topic numbers ---
+# 1. Macroeconomics
+# 2. Civil Rights, Minority Issues, and Civil Liberties
+# 3. Health
+# 4. Agriculture
+# 5. Labor and Employment
+# 6. Education
+# 7. Environment
+# 8. Energy
+# 9. Immigration
+# 10. Transportation
+# 12. Law, Crime, and Family Issues
+# 13. Social Welfare
+# 14. Community Development and Housing Issues
+# 15. Banking, Finance, and Domestic Commerce
+# 16. Defense
+# 17. Space, Science, Technology and Communications
+# 18. Foreign Trade
+# 19. International Affairs and Foreign Aid
 # 20. Government Operations
 
-# lets start by subsetting our data -- we only want HR bills with a major topic less than 11 
+# lets start by subsetting our data -- we only want HR bills with a major topic less than 11
 reduced_data <- data[which(data$BillType == "HR" &  data$Major < 11),]
 
 #define a matrix to hold our calcuated statistics
@@ -183,7 +201,7 @@ party_monthly_statistics <- matrix(0, nrow = 10, ncol = 2)
 
 #now we loop over months
 for(i in 1:10){
-    
+
     #now for each month we loop over parties
     for(j in 1:2){
         # set teh variable we are going to lookup against for party ID
@@ -192,21 +210,21 @@ for(i in 1:10){
         }else{
             party <- 200
         }
-        
+
         current_data <- reduced_data[which(reduced_data$Party == party & reduced_data$Major == i),]
-        
+
         if(length(current_data[,1]) > 0){
             # Now subset to those that passed the house
             current_data <- current_data[which(current_data$PassH == 1),]
-            
+
             #calculate the weight
             cosponsorship_weight <- length(current_data[,1])/sum(current_data$Cosponsr)
-            
+
             #check to see if it is a valid weight, if not, set equal to zero
             if(is.nan(cosponsorship_weight) | cosponsorship_weight > 1 ){
                 cosponsorship_weight <- 0
             }
-            
+
             #take that weight and put it in our dataset
             party_monthly_statistics[i,j] <- cosponsorship_weight
         }
@@ -215,7 +233,7 @@ for(i in 1:10){
 }
 
 # load the labels for bill major topics
-load("Topic_Lookup.Rdata")
+load("./Data/Topic_Lookup.Rdata")
 #replace a really long one with a shorter title for plotting
 major_topic_lookup[2,1] <- "2. Civil Rights"
 
@@ -228,10 +246,10 @@ par(mar = c(13,5,2,2))
 # plot our data using matplot which lets us easily plot more than one series on the same axes
 matplot(x= 1:10,  #this tells matplot what the x values should be
         y=cbind(party_monthly_statistics[,2],party_monthly_statistics[,1]), #this reverses democrat and republican so it is easier to see the democrat points and then specifies the y values
-        pch = 19, #this sets the point type to be dots 
+        pch = 19, #this sets the point type to be dots
         xlab = "", #this say do not plot an x label as we will specify it later
         ylab = "Cosponsorships Per Passed Bill", #the y label
-        xaxt = "n", #dont plot any x-axis ticks 
+        xaxt = "n", #dont plot any x-axis ticks
         col = c("red","blue"), #the colors for the dots, blue is democrat, red is republican
         ylim = c(-0.01,.2) #the y-limits of the plotting range
         )
