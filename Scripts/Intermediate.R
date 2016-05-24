@@ -150,6 +150,8 @@ for(i in 1:10){
   cat(my_column_sum(i,my_mat),"\n")
 }
 
+# we can now write a function that calls our function to automatically
+# do the above for any matrix
 col_sums_for_fun <- function(mat) {
     # figure out the number of columns
     cols <- ncol(mat)
@@ -160,9 +162,11 @@ col_sums_for_fun <- function(mat) {
     }
 }
 
+# lets try it with a larger matrix
 my_mat2 <- matrix(301:700,nrow=20,ncol=20)
-
 col_sums_for_fun(my_mat2)
+
+
 ###### A Data Cleaning Example ######
 
 # lets read in some data
