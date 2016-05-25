@@ -13,20 +13,21 @@ setwd("~/Dropbox/RA_and_Consulting_Work/ISSR_Data_Management_in_R_2016/Data")
 # This is a very complex data management problem.
 Congresses <- 11
 
-# 1. The assign function lets us name objects usign the paste function in R. This
-# is good for batch reading in data or generating lots of data objects.
 
 # lets begin by loading in some data:
 cat("Loading Raw Senate Cosponsorship Matrix Data... \n")
 
 # create a list object to store the data in
-cosponsorship_data <- vector(mode = "list", length = Congresses)
+cosponsorship_data <- vector(mode = "list",
+                             length = Congresses)
 
 # loop over sessions of Congress
 for (i in 1:Congresses) {
     cur <- 99 + i
+    cat("Currently working on congress:",cur,"\n")
     temp <- read.csv(paste(cur,"_senmatrix.txt", sep = ""),
-                     stringsAsFactors = F, header = F)
+                     stringsAsFactors = F,
+                     header = F)
     # we are only going to look at the first 100 bills from each congress
     temp <- temp[,1:100]
     cosponsorship_data[[i]] <- list(raw_data = temp)
@@ -46,7 +47,9 @@ for (i in 1:Congresses) {
 
     #create a sociomatrix to populate
     num_senators <- length(temp[,1])
-    temp_sociomatrix <- matrix(0,ncol = num_senators, nrow = num_senators)
+    temp_sociomatrix <- matrix(0,
+                               ncol = num_senators,
+                               nrow = num_senators)
 
     # this is an example of nested looping
     for (j in 1:length(temp[1,])) {#for every bill
