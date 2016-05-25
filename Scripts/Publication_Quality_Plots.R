@@ -52,6 +52,8 @@ hist(lacour.therm.study1,
 # following into our console:
 ?rgb()
 
+# to convert hex to rgb we can use: http://hex.colorrrs.com/
+
 # now lets give it a try
 UMASS_BLUE <- rgb(51,51,153,195,maxColorValue = 255)
 UMASS_RED <- rgb(153,0,51,195,maxColorValue = 255)
@@ -71,7 +73,8 @@ hist(lacour.therm.study1,
      ylab = "Number of Respondents",
      xlab = "Feeling Thermometer",
      main = "LaCour (2014) Study 1, Baseline",
-     col = UMASS_ORANGE)
+     col = UMASS_BLUE,
+     ylim = c(0,2000))
 
 # my preffered way of exporting plots for inclusion in a LaTeX document is as a
 # pdf. We can do this as follows:
@@ -83,13 +86,16 @@ hist(lacour.therm.study1,
      ylab = "Number of Respondents",
      xlab = "Feeling Thermometer",
      main = "LaCour (2014) Study 1, Baseline",
-     col = UMASS_ORANGE)
+     col = UMASS_ORANGE,
+     ylim = c(0,2000))
 dev.off() # ends the plot
 
 # the key here is to get the dimensions correct.
 
 # lets try another example from a paper I wrote:
 # http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2465309
+
+plot(x = data$Congress, y = data$Floor_Amendments)
 
 g1 <- ggplot(data , aes(x = Congress, y = Floor_Amendments)) +
     geom_point() + stat_smooth(method = lm) +
@@ -143,7 +149,7 @@ fit <- lm(formula = "Connectedness ~ Seniority + NOMINATE + NOMINATE_SQ +  In_Ma
 summary(fit)
 
 # create a session variable which we will add on to our coefficients
-Session <- rep(i,6)
+Session <- rep(i,5)
 
 # column bind them together
 Session_Regression_Coefficients <- cbind(summary(fit)$coefficients[2:6,],
@@ -164,7 +170,7 @@ for (i in 98:108) {
     fit <- lm(formula = "Connectedness ~ Seniority + NOMINATE + NOMINATE_SQ +  In_Majority + Committee_Chair", data = cur_data )
 
     # add in session variable
-    Session <- rep(i,6)
+    Session <- rep(i,5)
 
     # create the data frame we will add on to the existing
     # Session_Regression_Coefficients data.frame
@@ -187,7 +193,10 @@ Session_Regression_Coefficients <- data.frame(Session_Regression_Coefficients,
 interval1 <- -qnorm((1-0.9)/2)  # 90% multiplier
 interval2 <- -qnorm((1-0.95)/2)  # 95% multiplier
 
-pdf(file = paste("Connectedness_Regression_Coefficients.pdf",sep = ""),width = 18,height =4)
+# make the plot!
+pdf(file = "Connectedness_Regression_Coefficients.pdf",
+    width = 18,
+    height = 4)
 # plot coefficients faceted by Variable type
 ggplot(Session_Regression_Coefficients, aes(x = Session, y = Estimate))  +
     facet_grid(. ~ Variable, scales = "free") +
