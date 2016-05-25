@@ -9,7 +9,6 @@ rm(list = ls())
 # Set your working directory -- This is where R goes to look for files and save stuff by default. You will need to do this for each computer you run your script file on. In RStudio, you can go to Session -> Set Working Directory -> Choose Directory and select a folder from a drop down menu. For me, this looks like:
 setwd("~/Dropbox/RA_and_Consulting_Work/ISSR_Data_Management_in_R_2016")
 
-
 ###### cat vs. print ######
 
 # the cat function will print things without "" marks around them, which often looks nicer, but it also does not skip to a new line if you call it multiple times inside of a function (something we will get to soon) or a loop. Lets try out both:
@@ -198,12 +197,13 @@ load("./Data/Example_Data.Rdata")
 # 20. Government Operations
 
 # lets start by subsetting our data -- we only want HR bills with a major topic less than 11
-reduced_data <- data[which(data$BillType == "HR" &  data$Major < 11),]
+
+reduced_data <- data[which(data$BillType == "HR" & data$Major < 11),]
 
 #define a matrix to hold our calcuated statistics
-party_monthly_statistics <- matrix(0, nrow = 10, ncol = 2)
+party_topic_statistics <- matrix(0, nrow = 10, ncol = 2)
 
-#now we loop over months
+#now we loop over topics
 for(i in 1:10){
 
     #now for each month we loop over parties
@@ -215,14 +215,16 @@ for(i in 1:10){
             party <- 200
         }
 
+        # subset down to party/topic combination
         current_data <- reduced_data[which(reduced_data$Party == party & reduced_data$Major == i),]
 
+        # check to make sure that there are any observations for the current party/topic combination
         if(length(current_data[,1]) > 0){
             # Now subset to those that passed the house
             current_data <- current_data[which(current_data$PassH == 1),]
 
             #calculate the weight
-            cosponsorship_weight <- length(current_data[,1])/sum(current_data$Cosponsr)
+            cosponsorship_weight <- nrow(current_data)/sum(current_data$Cosponsr)
 
             #check to see if it is a valid weight, if not, set equal to zero
             if(is.nan(cosponsorship_weight) | cosponsorship_weight > 1 ){
@@ -230,7 +232,7 @@ for(i in 1:10){
             }
 
             #take that weight and put it in our dataset
-            party_monthly_statistics[i,j] <- cosponsorship_weight
+            party_topic_statistics[i,j] <- cosponsorship_weight
         }
 
     }
@@ -249,7 +251,7 @@ par(mar = c(13,5,2,2))
 
 # plot our data using matplot which lets us easily plot more than one series on the same axes
 matplot(x= 1:10,  #this tells matplot what the x values should be
-        y=cbind(party_monthly_statistics[,2],party_monthly_statistics[,1]), #this reverses democrat and republican so it is easier to see the democrat points and then specifies the y values
+        y=cbind(party_topic_statistics[,2],party_topic_statistics[,1]), #this reverses democrat and republican so it is easier to see the democrat points and then specifies the y values
         pch = 19, #this sets the point type to be dots
         xlab = "", #this say do not plot an x label as we will specify it later
         ylab = "Cosponsorships Per Passed Bill", #the y label
